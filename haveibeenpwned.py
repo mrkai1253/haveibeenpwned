@@ -1,5 +1,4 @@
 import argparse
-
 import requests
 
 BASE_URL = 'https://haveibeenpwned.com/api/v2/breachedaccount/{0}'
@@ -17,16 +16,18 @@ class bcolors:
 
 
 def main(mailid='test@example.com'):
-    req = requests.get(BASE_URL.format(mailid))
-    pwned_no = len(req.json())
-    if (pwned_no <= 1):
-        print('{0}You have been pwned {1} time'.format(bcolors.FAIL, pwned_no))
-    else:
-        print('You have been pwned {1} times'.format(bcolors.FAIL, pwned_no))
-    for d in req.json():
-        for key, val in d.items():
-            print(key, val)
-
+    try:
+        req = requests.get(BASE_URL.format(mailid))
+        pwned_no = len(req.json())
+        if (pwned_no <= 1):
+            print('{0}You have been pwned {1} time'.format(bcolors.FAIL, pwned_no))
+        else:
+            print('You have been pwned {1} times'.format(bcolors.FAIL, pwned_no))
+        for d in req.json():
+            for key, val in d.items():
+                print(key, val)
+    except:
+        print(bcolors.HEADER + 'You where never pwned~!')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='haveibeenpwned command line tool')
